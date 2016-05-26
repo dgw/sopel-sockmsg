@@ -9,8 +9,9 @@ from sopel import tools
 import socket
 import threading
 
-HOST = '127.0.0.1'
-PORT = 7675  # SOPL
+HOST   = '127.0.0.1'
+PORT   = 7675  # SOPL
+TARGET = '#dgw'
 
 sock = socket.socket()  # configured etc. during module startup
 
@@ -38,7 +39,7 @@ def botsaydata(conn, bot):
         if not data:
             conn.close()
             break
-    bot.say("[socket message] %s" % text, '#dgw')
+    bot.say("[socket message] %s" % text, TARGET)
 
 
 # Start listener on welcome RPL, which should only ever be received once
