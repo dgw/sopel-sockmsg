@@ -13,11 +13,14 @@ HOST   = '127.0.0.1'
 PORT   = 7675  # SOPL
 TARGET = '#dgw'
 
-sock = socket.socket()  # configured etc. during module startup
+sock = None
 
 
 def setup(bot):
     global sock
+    if sock:  # the socket will already exist if the module is being reloaded
+        return
+    sock = socket.socket()  # the default socket types should be fine for sending text to localhost
     try:
         sock.bind((HOST, PORT))
     except socket.error as msg:
@@ -27,7 +30,9 @@ def setup(bot):
 
 
 def shutdown(bot):
+    global sock
     sock.close()
+    sock = None  # best to be explicit about things
 
 
 def botsaydata(conn, bot):
