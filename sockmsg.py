@@ -36,15 +36,22 @@ def shutdown(bot):
 
 
 def botsaydata(conn, bot):
-    text = ''
+    buffer = ''
     while True:
         data = conn.recv(2048)
-        print 'received data from socket: %s' % data
-        text += data
+        buffer += data
         if not data:
             conn.close()
             break
-    bot.say("[socket message] %s" % text, TARGET)
+        if '\n' in buffer:
+            data, _, buffer = buffer.rpartition('\n')
+            sayit(bot, data)
+    sayit(bot, buffer)
+
+
+def sayit(bot, data):
+    for line in data.splitlines():
+        bot.say("[sockmsg] %s" % line, TARGET)
 
 
 # Start listener on welcome RPL, which should only ever be received once
