@@ -35,7 +35,7 @@ def shutdown(bot):
     sock = None  # best to be explicit about things
 
 
-def botsaydata(conn, bot):
+def receiver(conn, bot):
     buffer = ''
     while True:
         data = conn.recv(2048)
@@ -61,4 +61,4 @@ def listener(bot, trigger):
     global sock
     while True:
         conn, addr = sock.accept()
-        threading.Thread(target=botsaydata, args=(conn, bot), name='socket-listener').start()
+        threading.Thread(target=receiver, args=(conn, bot), name='sockmsg-listener').start()
